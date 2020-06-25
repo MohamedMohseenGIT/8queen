@@ -1,7 +1,7 @@
 import random
 
 def random_chromosome(size): #making random chromosomes 
-    return [ random.randint(1, nq) for _ in range(nq) ]
+    return [ random.randint(0, nq-1) for _ in range(nq) ]
 
 def fitness(chromosome):
     horizontal_collisions = sum([chromosome.count(queen)-1 for queen in chromosome])/2
@@ -11,8 +11,8 @@ def fitness(chromosome):
     left_diagonal = [0] * 2*n
     right_diagonal = [0] * 2*n
     for i in range(n):
-        left_diagonal[i + chromosome[i] - 1] += 1
-        right_diagonal[len(chromosome) - i + chromosome[i] - 2] += 1
+        left_diagonal[i + chromosome[i] ] += 1
+        right_diagonal[len(chromosome) - i + chromosome[i] - 1] += 1
 
     diagonal_collisions = 0
     for i in range(2*n-1):
@@ -47,7 +47,7 @@ def reproduce(x, y): #doing cross_over between two chromosomes
 def mutate(x):  #randomly changing the value of a random index of a chromosome
     n = len(x)
     c = random.randint(0, n - 1)
-    m = random.randint(1, n)
+    m = random.randint(0, n - 1)
     x[c] = m
     return x
 
@@ -71,15 +71,15 @@ def print_chromosome(chrom):
         .format(str(chrom), fitness(chrom)))
 
 if __name__ == "__main__":
-    nq = 8 
+    nq = 8
     '''int(input("Enter Number of Queens: ")) #say N = 8 our case is is 8 queens'''
     maxFitness = (nq*(nq-1))/2  # 8*7/2 = 28 - Pairs of non-attacking queens (1st row queen can make pair with 7 other queen , 2nd row queen makes paur with other 6 quues as 1 pair is already with 1st row queen, simillarly 3rd row queen with 5 queens since it has already paired with 1st row and 2nd row queen.....)
     population = [random_chromosome(nq) for _ in range(100)]
-    
+      
     generation = 1
 
     while not maxFitness in [fitness(chrom) for chrom in population]:
-        print("====*==== Generation Till now {} ====*====".format(generation))
+        print("=======*======= Generation Till now {} =======*=======".format(generation))
         population = genetic_queen(population, fitness)
         print("")
         print("Max Fitness = {}".format(max([fitness(n) for n in population])))
@@ -93,15 +93,17 @@ if __name__ == "__main__":
             chrom_out = chrom
             print_chromosome(chrom)
             
-    board = []
+    '''board = []
 
     for x in range(nq):
-        board.append(["x"] * nq)
+        board.append(["x"] * (nq-1))
         
     for i in range(nq):
-        board[nq-chrom_out[i]][i]="Q"
+        board[nq-chrom_out[i]][i]="Q    "
             
 
     def print_board(board):
         for row in board:
             print (" ".join(row))
+    print_board(board)'''     
+    print()
